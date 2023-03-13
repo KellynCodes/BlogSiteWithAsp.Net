@@ -1,4 +1,5 @@
-﻿using KellyBlog.BLL.Interfaces;
+﻿using KellyBlog.BLL.Implementations;
+using KellyBlog.BLL.Interfaces;
 using KellyBlog.BLL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,15 +7,15 @@ namespace KellyBlog.Controllers
 {
     public class PostController : Controller
     {
-        private readonly ILogger<PostController> _logger;
-        private readonly IPostServices _postServices;
 
-        public PostController(ILogger<PostController> logger, IPostServices postServices)
+        private readonly ILogger<PostController> _logger;
+        private readonly ICommentServices _commentServices;
+
+        public PostController(ILogger<PostController> logger, ICommentServices commentServices)
         {
             _logger = logger;
-            _postServices = postServices;
+            _commentServices = commentServices;
         }
-
         public IActionResult Index()
         {
             return View();
@@ -24,26 +25,24 @@ namespace KellyBlog.Controllers
             return View();
         }
 
-        public async Task<IActionResult> SaveComment(PostVm postVm) 
+        [HttpPost]
+        public async Task<IActionResult> SaveComment(int postId, CommentsVm commentVm)
         {
-            if (ModelState.IsValid)
+
+            var (IsSuccessful, msg) = await _commentServices.CommentOnPostAsync(postId, commentVm);
+
+            if (IsSuccessful)
             {
-
-                var (isSuccessful, msg) = await _postServices.CreatePostAsync(postVm);
-
-                if (isSuccessful)
-                {
-                    TempData["SuccessMsg"] = msg;
-                    return RedirectToAction("Post");
-                }
-
-                ViewBag.ErrMsg = msg;
-
-                return View("New");
-
+                TempData["SuccessMsg"] = msg;
+                return RedirectToAction("Index");
             }
 
-            return View("Post");
+            ViewBag.ErrMsg = msg;
+
+            return RedirectToAction("Home");
+
+            /* ViewBag.ErrMsg = "Chai ije uwa";
+             return RedirectToAction("Post");*/
         }
     }
 }

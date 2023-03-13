@@ -26,18 +26,15 @@ namespace TodoList.DAL.Seeds
         }
 
 
-        private static IEnumerable<User> UsersWithToDos()
+        private static User UsersWithToDos()
         {
-            return new List<User>()
+            return new User()
             {
-                new User()
-                {
-                    FirstName = "John Doe",
-                    Email = "john.doe@domain.com",
-                    Password = "123445678",
-                    Address = "Enugu State.",
-                    CreatedDated  = DateTime.UtcNow,
-                },
+                FirstName = "John Doe",
+                Email = "john.doe@domain.com",
+                Password = "123445678",
+                Address = "Enugu State.",
+                CreatedDated = DateTime.UtcNow,
             };
         }
 

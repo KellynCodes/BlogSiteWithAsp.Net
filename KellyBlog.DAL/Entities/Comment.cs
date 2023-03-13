@@ -4,7 +4,7 @@
     {
         public string Content { get; set; }
         public User User { get; set; }
-        public Guid UserId { get; set; }
+        public Guid UserId { get; set; } = Guid.NewGuid();
         public long? Likes { get; set; }
         public long? Replies { get; set; }
     }

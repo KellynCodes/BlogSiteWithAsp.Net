@@ -33,9 +33,13 @@ namespace KellyBlog.BLL.Implementations
                 return rowChanges > 0 ? (true, $"Task: {postVm.Title} was successfully created!") : (false, "Failed To save changes!");
         }
 
-        public Task<(bool isSuccessful, string msg)> DeletePostAsync(PostVm post)
+        public async Task<(bool isSuccessful, string msg)> DeletePostAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            var PostToDel = await _postRepo.GetByIdAsync(userId);
+            await _postRepo.DeleteAsync(PostToDel);
+           await _unitOfWork.SaveChangesAsync();
+            var rowChanges = await _unitOfWork.SaveChangesAsync();
+            return rowChanges > 0 ? (true, $"Task: {PostToDel.Title} was successfully created!") : (false, "Failed To save changes!");
         }
 
         public Task<(bool isSuccessful, string msg)> GetAllPostAsync()
