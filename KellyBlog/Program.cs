@@ -1,12 +1,15 @@
+using KellyBlog.BLL.Implementations;
+using KellyBlog.BLL.Interfaces;
 using KellyBlog.DAL.DbConfig;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using TodoList.DAL.Repository;
 
 namespace KellyBlog
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +18,14 @@ namespace KellyBlog
             builder.Services.AddDbContext<BlogDbContext
                 >(dbOption =>
             {
-                var ConnectionString = builder.Configuration.GetSection("Connection")["ConnString"];
+                var ConnectionString = builder.Configuration.GetSection("ConnectionStrings")["ConnString"];
                 dbOption.UseSqlServer(ConnectionString);
             });
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork<BlogDbContext>>();
+            builder.Services.AddScoped<IPostServices, PostServices>();
+            builder.Services.AddScoped<ICommentServices, CommentServices>();
+            builder.Services.AddAutoMapper(Assembly.Load("KellyBlog.BLL"));
 
             var app = builder.Build();
 
@@ -40,8 +46,8 @@ namespace KellyBlog
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-
-            app.Run();
+            await SeedData.EnsurePopulatedAsync(app);
+            await app.RunAsync();
         }
     }
 }
