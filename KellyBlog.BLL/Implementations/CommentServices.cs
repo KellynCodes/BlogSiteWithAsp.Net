@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using KellyBlog.BLL.Interfaces;
 using KellyBlog.BLL.ViewModels;
-using TodoList.DAL.Repository;
+using KellyBlog.DAL.Entities;
+using KellyBlog.DAL.Repository;
 
 namespace KellyBlog.BLL.Implementations
 {
@@ -10,31 +11,31 @@ namespace KellyBlog.BLL.Implementations
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IRepository<CommentsVm> _commentVmRepo;
+        private readonly IRepository<Comment> _commentRepo;
 
 
         public CommentServices(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _commentVmRepo = _unitOfWork.GetRepository<CommentsVm>();
+            _commentRepo = _unitOfWork.GetRepository<Comment>();
         }
-        public async Task<(bool IsSuccessful, string msg)> CommentOnPostAsync(int postId, CommentsVm commentsVm)
+        public async Task<(bool IsSuccessful, string msg)> CommentOnPostAsync(CommentsVm commentsVm)
         {
             // var newTask = _mapper.Map<PostVm, Post>(model);
             Console.WriteLine(commentsVm.PostId);
-            var newComment = _mapper.Map<CommentsVm>(commentsVm);
-            await _commentVmRepo.AddAsync(newComment);
+            var newComment = _mapper.Map<Comment>(commentsVm);
+            await _commentRepo.AddAsync(newComment);
             var rowChanges = await _unitOfWork.SaveChangesAsync();
-            return rowChanges > 0 ? (true, $"Task: {commentsVm.Name} you comment was successfully created!") : (false, "Failed To save changes!");
+            return rowChanges > 0 ? (true, $"Task: {commentsVm.UserName} you comment was successfully created!") : (false, "Failed To save changes!");
         }
 
-        public Task<(bool IsSuccessful, string msg)> DeleteCommentAsync(int postId, Guid userId)
+        public Task<(bool IsSuccessful, string msg)> DeleteCommentAsync(Guid postId, Guid userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<(bool IsSuccessful, string msg)> EditCommentAsync(int postId, Guid userId)
+        public Task<(bool IsSuccessful, string msg)> EditCommentAsync(Guid postId, Guid userId)
         {
             throw new NotImplementedException();
         }

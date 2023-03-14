@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 
-namespace TodoList.DAL.Repository;
+namespace KellyBlog.DAL.Repository;
 
 public interface IRepository<T> where T : class
 {

@@ -1,7 +1,7 @@
 ﻿using KellyBlog.BLL.Interfaces;
 using KellyBlog.BLL.ViewModels;
 using KellyBlog.DAL.Entities;
-using TodoList.DAL.Repository;
+using KellyBlog.DAL.Repository;
 using AutoMapper;
 
 namespace KellyBlog.BLL.Implementations
@@ -28,16 +28,16 @@ namespace KellyBlog.BLL.Implementations
         {
             // var newTask = _mapper.Map<PostVm, Post>(model);
             var newTask = _mapper.Map<Post>(postVm);
-              await _postRepo.AddAsync(newTask);
-                var rowChanges = await _unitOfWork.SaveChangesAsync();
-                return rowChanges > 0 ? (true, $"Task: {postVm.Title} was successfully created!") : (false, "Failed To save changes!");
+            await _postRepo.AddAsync(newTask);
+            var rowChanges = await _unitOfWork.SaveChangesAsync();
+            return rowChanges > 0 ? (true, $"Task: {postVm.Title} was successfully created!") : (false, "Failed To save changes!");
         }
 
         public async Task<(bool isSuccessful, string msg)> DeletePostAsync(Guid userId)
         {
             var PostToDel = await _postRepo.GetByIdAsync(userId);
             await _postRepo.DeleteAsync(PostToDel);
-           await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             var rowChanges = await _unitOfWork.SaveChangesAsync();
             return rowChanges > 0 ? (true, $"Task: {PostToDel.Title} was successfully created!") : (false, "Failed To save changes!");
         }

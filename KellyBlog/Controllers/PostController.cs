@@ -9,27 +9,32 @@ namespace KellyBlog.Controllers
     {
 
         private readonly ILogger<PostController> _logger;
-        private readonly ICommentServices _commentServices;
+        private readonly IPostServices _postServices;
 
-        public PostController(ILogger<PostController> logger, ICommentServices commentServices)
+        public PostController(ILogger<PostController> logger, IPostServices postServices)
         {
             _logger = logger;
-            _commentServices = commentServices;
+            _postServices = postServices;
         }
         public IActionResult Index()
         {
             return View();
-        } 
+        }
         public IActionResult Posts()
         {
             return View();
         }
 
+        public async Task<IActionResult> NewPost()
+        {
+            return View();
+        }
+
         [HttpPost]
-        public async Task<IActionResult> SaveComment(int postId, CommentsVm commentVm)
+        public async Task<IActionResult> SavePost(PostVm postVm)
         {
 
-            var (IsSuccessful, msg) = await _commentServices.CommentOnPostAsync(postId, commentVm);
+            var (IsSuccessful, msg) = await _postServices.CreatePostAsync(postVm);
 
             if (IsSuccessful)
             {

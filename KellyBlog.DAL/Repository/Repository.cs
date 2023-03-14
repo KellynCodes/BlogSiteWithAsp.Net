@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace TodoList.DAL.Repository
+namespace KellyBlog.DAL.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {

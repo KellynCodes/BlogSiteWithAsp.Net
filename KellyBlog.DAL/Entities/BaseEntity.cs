@@ -2,8 +2,8 @@
 {
     public class BaseEntity
     {
-        public Guid Id { get; set; } = new Guid();
-        public DateTime CreatedDated { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public DateTime CreatedDated { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedDated { get; set; }
         public byte[]? Concurrency { get; set; }
     }
