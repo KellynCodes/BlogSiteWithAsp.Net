@@ -9,10 +9,10 @@ namespace KellyBlog.BLL.ProfileMapper
 
         public MapProfile()
         {
-            CreateMap<Comment, CommentsVm>();
+            CreateMap<CommentsVm, Comment>();
             //.ForMember(dest => dest., opt => opt.MapFrom(src => src.Title));
 
-            CreateMap<Post, PostVm>();
+            CreateMap<PostVm, Post>().ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PostId));;
         }
     }
 }

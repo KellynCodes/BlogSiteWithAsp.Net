@@ -33,28 +33,28 @@ namespace KellyBlog.BLL.Implementations
             return rowChanges > 0 ? (true, $"Task: {postVm.Title} was successfully created!") : (false, "Failed To save changes!");
         }
 
-        public async Task<(bool isSuccessful, string msg)> DeletePostAsync(Guid userId)
+        public async Task<(bool isSuccessful, string msg)> DeletePostAsync(string userId)
         {
             var PostToDel = await _postRepo.GetByIdAsync(userId);
             await _postRepo.DeleteAsync(PostToDel);
             await _unitOfWork.SaveChangesAsync();
             var rowChanges = await _unitOfWork.SaveChangesAsync();
-            return rowChanges > 0 ? (true, $"Task: {PostToDel.Title} was successfully created!") : (false, "Failed To save changes!");
+            return rowChanges > 0 ? (true, $"Task: {PostToDel.Title} was successfully deleted!") : (false, "Failed To save changes!");
         }
 
-        public Task<(bool isSuccessful, string msg)> GetAllPostAsync()
+        public Task<(bool isSuccessful, string msg, PostVm postVm)> GetAllPostAsync()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<(bool isSuccessful, string msg)> GetPostAsync(Guid userId, Guid post)
+        public async Task<(Post post, bool isSuccessful, string msg)> GetPostAsync(string userId, string postId)
         {
-            //_userRepo.GetBySingIdAsync();
-
-            return (true, "Users fetched successfully.");
+           Post fetchedPost = await _postRepo.GetSingleByAsync(post => post.Id == postId && post.UserId == userId, tracking: true);
+           if(fetchedPost != null) return (fetchedPost, true, "Post fetched successfully.");
+           return (fetchedPost, false, "Error occurred please try again.");
         }
 
-        public Task<(bool isSuccessful, string msg)> UpdatePostAsync(Guid userId, PostVm post)
+        public Task<(bool isSuccessful, string msg)> UpdatePostAsync(string userId, PostVm post)
         {
 
             throw new NotImplementedException();

@@ -16,14 +16,9 @@ namespace KellyBlog.DAL.DbConfig
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.Entity<User>(entity =>
             {
-             entity.Property(e => e.Id)
-            .HasConversion(
-                v => Guid.Parse(v),
-                v => v.ToString())
-            .ValueGeneratedOnAdd();
-            entity.HasKey(e => e.Id);
                 entity.HasIndex(prop => prop.Email, $"IX_{nameof(User.Email)}").IsUnique(true);
                 entity.Property(p => p.LastName).IsRequired(false);
                 entity.Property(p => p.Address).IsRequired(false);
@@ -34,12 +29,6 @@ namespace KellyBlog.DAL.DbConfig
 
             modelBuilder.Entity<Post>(entity =>
             {
-                 entity.Property(e => e.Id)
-            .HasConversion(
-                v => Guid.Parse(v),
-                v => v.ToString())
-            .ValueGeneratedOnAdd();
-            entity.HasKey(e => e.Id);
                 entity.HasIndex(prop => prop.UserId, $"IX_{nameof(Post.UserId)}").IsUnique(true);
                 entity.Property(p => p.CommentsId).IsRequired(false);
                 entity.Property(p => p.ShareId).IsRequired(false);
@@ -50,12 +39,6 @@ namespace KellyBlog.DAL.DbConfig
 
             modelBuilder.Entity<Share>(entity =>
             {
-                 entity.Property(e => e.Id)
-            .HasConversion(
-                v => Guid.Parse(v),
-                v => v.ToString())
-            .ValueGeneratedOnAdd();
-            entity.HasKey(e => e.Id);
                 entity.HasIndex(prop => prop.UserId, $"IX_{nameof(Share.UserId)}").IsUnique(true);
                 entity.Property(p => p.Shares).IsRequired(false);
                  entity.Property(p => p.Concurrency).IsRequired(false);
@@ -64,12 +47,6 @@ namespace KellyBlog.DAL.DbConfig
 
             modelBuilder.Entity<Comment>(entity =>
             {
-                 entity.Property(e => e.Id)
-            .HasConversion(
-                v => Guid.Parse(v),
-                v => v.ToString())
-            .ValueGeneratedOnAdd();
-            entity.HasKey(e => e.Id);
                 entity.HasIndex(prop => prop.UserId, $"IX_{nameof(Comment.UserId)}").IsUnique(true);
                 entity.Property(p => p.Likes).IsRequired(false);
                 entity.Property(p => p.Replies).IsRequired(false);

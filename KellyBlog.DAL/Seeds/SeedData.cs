@@ -31,10 +31,10 @@ namespace KellyBlog.DAL.Seeds
             return new User()
             {
                 Id = Guid.NewGuid().ToString(),
-                FirstName = "John Doe",
-                Email = "john.doe@domain.com",
-                Password = "123445678",
-                Address = "Enugu State.",
+                FirstName = "KellynCodes",
+                Email = "kelly@gmail.com",
+                Password = "kellyblog.com",
+                Address = "Lagost State.",
                 CreatedDated = DateTime.UtcNow,
             };
         }

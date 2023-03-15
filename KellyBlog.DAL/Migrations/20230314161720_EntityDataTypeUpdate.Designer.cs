@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KellyBlog.DAL.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20230314093353_EntityUpdate")]
-    partial class EntityUpdate
+    [Migration("20230314161720_EntityDataTypeUpdate")]
+    partial class EntityDataTypeUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,8 @@ namespace KellyBlog.DAL.Migrations
 
             modelBuilder.Entity("KellyBlog.DAL.Entities.Comment", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<byte[]>("Concurrency")
                         .HasColumnType("varbinary(max)");
@@ -44,8 +43,8 @@ namespace KellyBlog.DAL.Migrations
                     b.Property<string>("Likes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("PostId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("PostId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Replies")
                         .HasColumnType("nvarchar(max)");
@@ -56,8 +55,8 @@ namespace KellyBlog.DAL.Migrations
                     b.Property<string>("UserEmail")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
@@ -75,9 +74,8 @@ namespace KellyBlog.DAL.Migrations
 
             modelBuilder.Entity("KellyBlog.DAL.Entities.Post", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Body")
                         .IsRequired()
@@ -98,8 +96,8 @@ namespace KellyBlog.DAL.Migrations
                     b.Property<string>("Likes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ShareId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ShareId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -108,25 +106,24 @@ namespace KellyBlog.DAL.Migrations
                     b.Property<DateTime?>("UpdatedDated")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ShareId");
 
                     b.HasIndex(new[] { "UserId" }, "IX_UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("KellyBlog.DAL.Entities.Share", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<byte[]>("Concurrency")
                         .HasColumnType("varbinary(max)");
@@ -140,8 +137,8 @@ namespace KellyBlog.DAL.Migrations
                     b.Property<DateTime?>("UpdatedDated")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -154,9 +151,8 @@ namespace KellyBlog.DAL.Migrations
 
             modelBuilder.Entity("KellyBlog.DAL.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
@@ -219,7 +215,9 @@ namespace KellyBlog.DAL.Migrations
 
                     b.HasOne("KellyBlog.DAL.Entities.User", null)
                         .WithMany("Posts")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Share");
                 });
