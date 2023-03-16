@@ -1,5 +1,22 @@
 ﻿@{
-	ViewData["Title"] = "Posts";
+    ViewData["Title"] = "Posts";
+}
+
+@if (@ViewBag.ErrMsg != null)
+{
+                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                          <strong>Error!</strong> @ViewBag.ErrMsg
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                      <div class="alert-danger" asp-validation-summary="@ValidationSummary.All"></div>
+}
+
+@if (@TempData["SuccessMsg"] != null)
+{
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      <strong>Success!</strong> @TempData["SuccessMsg"]
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
 }
 
 <!-- ======= Post Grid Section ======= -->

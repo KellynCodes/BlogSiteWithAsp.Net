@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace TodoList.DAL.Repository
+namespace KellyBlog.DAL.Repository
 {
     public class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
     {

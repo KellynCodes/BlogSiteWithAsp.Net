@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 
-namespace TodoList.DAL.Seeds
+namespace KellyBlog.DAL.Seeds
 {
     public class SeedData
     {
@@ -30,10 +30,11 @@ namespace TodoList.DAL.Seeds
         {
             return new User()
             {
-                FirstName = "John Doe",
-                Email = "john.doe@domain.com",
-                Password = "123445678",
-                Address = "Enugu State.",
+                Id = Guid.NewGuid().ToString(),
+                FirstName = "KellynCodes",
+                Email = "kelly@gmail.com",
+                Password = "kellyblog.com",
+                Address = "Lagost State.",
                 CreatedDated = DateTime.UtcNow,
             };
         }

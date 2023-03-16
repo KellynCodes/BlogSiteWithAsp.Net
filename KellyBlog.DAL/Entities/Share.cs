@@ -3,7 +3,7 @@
     public class Share : BaseEntity
     {
         public User User { get; set; }
-        public Guid UserId { get; set; } = Guid.NewGuid();
-        public long Shares { get; set; }
+        public string? UserId { get; set; }
+        public string? Shares { get; set; }
     }
 }

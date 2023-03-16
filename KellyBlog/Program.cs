@@ -3,7 +3,8 @@ using KellyBlog.BLL.Interfaces;
 using KellyBlog.DAL.DbConfig;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using TodoList.DAL.Repository;
+using KellyBlog.DAL.Repository;
+using KellyBlog.DAL.Seeds;
 
 namespace KellyBlog
 {
@@ -21,7 +22,6 @@ namespace KellyBlog
                 var ConnectionString = builder.Configuration.GetSection("ConnectionStrings")["ConnString"];
                 dbOption.UseSqlServer(ConnectionString);
             });
-
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork<BlogDbContext>>();
             builder.Services.AddScoped<IPostServices, PostServices>();
             builder.Services.AddScoped<ICommentServices, CommentServices>();

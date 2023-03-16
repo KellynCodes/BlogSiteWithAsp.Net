@@ -9,40 +9,60 @@ namespace KellyBlog.Controllers
     {
 
         private readonly ILogger<PostController> _logger;
-        private readonly ICommentServices _commentServices;
+        private readonly IPostServices _postServices;
 
-        public PostController(ILogger<PostController> logger, ICommentServices commentServices)
+        public PostController(ILogger<PostController> logger, IPostServices postServices)
         {
             _logger = logger;
-            _commentServices = commentServices;
+            _postServices = postServices;
         }
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index(string userId, string postId)
         {
-            return View();
-        } 
+            var (post, isSuccessful, msg) = await _postServices.GetPostAsync(userId, postId);
+            if (isSuccessful)
+            {
+                TempData["SuccessMsg"] = msg;
+                return View(post);
+            }
+
+            ViewBag.ErrMsg = "Error fetching user.";
+            return RedirectToAction("NewPost");
+        }
+
+
         public IActionResult Posts()
         {
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SaveComment(int postId, CommentsVm commentVm)
+        public async Task<IActionResult> NewPost()
         {
+            return View();
+        }
 
-            var (IsSuccessful, msg) = await _commentServices.CommentOnPostAsync(postId, commentVm);
-
-            if (IsSuccessful)
+        [HttpPost]
+        public async Task<IActionResult> SavePost(PostVm postVm)
+        {
+           if (ModelState.IsValid)
             {
-                TempData["SuccessMsg"] = msg;
-                return RedirectToAction("Index");
+
+          var (IsSuccessful, msg) = await _postServices.CreatePostAsync(postVm);
+
+              if (IsSuccessful)
+              {
+
+                  TempData["SuccessMsg"] = msg;
+                 Console.WriteLine(msg);
+                  return RedirectToAction("NewPost");
+              }
+
+              ViewBag.ErrMsg = msg;
+              return View("NewPost");
+
             }
-
-            ViewBag.ErrMsg = msg;
-
-            return RedirectToAction("Home");
-
-            /* ViewBag.ErrMsg = "Chai ije uwa";
-             return RedirectToAction("Post");*/
+              ViewBag.ErrMsg = "Sorry error occured. please check your entity.";
+            return View("index");
         }
     }
 }
